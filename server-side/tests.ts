@@ -13,5 +13,5 @@ import { runTest } from './potentialQA_SDK/tests_functions';
 export async function run(client: Client, request: any, testerFunctions: TesterFunctions) {
     const testedAddonUUID = request.body.AddonUUID;// this is the UUID of tested addon passed inside body
     console.log(`asked to run ${testedAddonUUID} tests`);
-    await runTest(testedAddonUUID, client, request, testerFunctions);
+    return (await runTest(testedAddonUUID, client, request, testerFunctions));
 }

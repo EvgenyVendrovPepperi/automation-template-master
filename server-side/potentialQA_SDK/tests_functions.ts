@@ -31,10 +31,11 @@ export async function runTest(addonUUID: string, client: Client, request, tester
     if (request.body.isLocal === "true") {
         addonService.BaseURL = "http://localhost:4500";
     }
+    const results: any[] = [];
     for (let index = 0; index < functionNames.length; index++) {
-        await context[functionNames[index]].apply(this, [client, addonService, request, testerFunctions]);
+        results.push(await context[functionNames[index]].apply(this, [client, addonService, request, testerFunctions]));
     }
-    return;
+    return results;
 }
 
 function mapUuidToTestName(addonUUID: string): string[] {
@@ -138,6 +139,6 @@ export async function nebula_test(client: Client, addonClient: Client, request: 
     testerFunctions = service.initiateTesterFunctions(client, testName);
     await NebulaTest(service, serviceAddon, request, testerFunctions);//this is the call to YOUR test function
     // await test_data(client, testerFunctions);//this is done to print versions at the end of test - can be deleted
-    return (await testerFunctions.run());
+    return testerFunctions.run();
 };
 context["nebula_test"] = nebula_test;
